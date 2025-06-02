@@ -1,23 +1,32 @@
+<!-- assignments.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>課題一覧</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    h1 { font-size: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin-bottom: 10px; }
+    a { color: blue; text-decoration: underline; }
+  </style>
 </head>
 <body>
-  <h1>課題一覧</h1>
-  <table id="assignment-table" border="1">
-    <thead>
-      <tr>
-        <th>タイトル</th>
-        <th>カテゴリ</th>
-        <th>リンク</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <h1>保存された課題一覧</h1>
+  <ul id="assignment-list"></ul>
 
-  <script src="assignments.js"></script>
+  <script>
+    chrome.storage.local.get(['assignments'], (result) => {
+      const list = document.getElementById('assignment-list');
+      const assignments = result.assignments || [];
+
+      assignments.forEach(a => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${a.category}</strong>: <a href="${a.url}" target="_blank">${a.title}</a>`;
+        list.appendChild(li);
+      });
+    });
+  </script>
 </body>
 </html>

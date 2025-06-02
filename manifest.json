@@ -1,27 +1,25 @@
 {
   "manifest_version": 3,
-  "name": "Webclass課題一覧表示",
+  "name": "WebClass課題抽出",
   "version": "1.0",
-  "description": "Webclassで自分の全コースの課題を期限順に表示します。",
-  "permissions": [
-    "activeTab",
-    "scripting",
-    "storage"
-  ],
-  "host_permissions": [
-    "https://lms-wc.el.kanazawa-u.ac.jp/webclass/*"
-  ],
-  "action": {
-    "default_popup": "popup.html"
-    
-  },
+  "permissions": ["storage", "tabs", "scripting"],
+  "host_permissions": ["https://lms-wc.el.kanazawa-u.ac.jp/webclass/*"],
   "background": {
     "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "課題一覧を開く"
   },
   "content_scripts": [
     {
       "matches": ["https://lms-wc.el.kanazawa-u.ac.jp/webclass/*"],
       "js": ["content_script.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["assignments.html"],
+      "matches": ["<all_urls>"]
     }
   ]
 }
