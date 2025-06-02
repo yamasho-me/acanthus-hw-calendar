@@ -9,7 +9,7 @@
     "storage"
   ],
   "host_permissions": [
-    "https://acanthus.cis.kanazawa-u.ac.jp/base/lms-course/list/*"
+    "https://lms-wc.el.kanazawa-u.ac.jp/webclass/*"
   ],
   "action": {
     "default_popup": "popup.html"
@@ -20,7 +20,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://acanthus.cis.kanazawa-u.ac.jp/base/lms-course/list/*"],
+      "matches": ["https://lms-wc.el.kanazawa-u.ac.jp/webclass/*"],
       "js": ["content_script.js"]
     }
   ]
