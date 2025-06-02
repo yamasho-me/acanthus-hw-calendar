@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Webclass課題一覧表示",
+  "version": "1.0",
+  "description": "Webclassで自分の全コースの課題を期限順に表示します。",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://acanthus.cis.kanazawa-u.ac.jp/base/lms-course/list/*"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+    
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://acanthus.cis.kanazawa-u.ac.jp/base/lms-course/list/*"],
+      "js": ["content_script.js"]
+    }
+  ]
+}
