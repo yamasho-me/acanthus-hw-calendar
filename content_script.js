@@ -1,6 +1,9 @@
 window.addEventListener('load', () => {
   const assignments = [];
 
+  // 対象カテゴリ一覧
+  const validCategories = ['課題', 'レポート', '試験', 'テスト', 'アンケート'];
+
   document.querySelectorAll('.cl-contentsList_listGroupItem').forEach(section => {
     const titleElement = section.querySelector('.cm-contentsList_contentName a, .cm-contentsList_contentName div');
     const title = titleElement?.innerText.trim() || '無題';
@@ -10,19 +13,25 @@ window.addEventListener('load', () => {
 
     const category = section.querySelector('.cl-contentsList_categoryLabel')?.innerText.trim() || '不明';
 
-    // 課題のみカウントしたいなら条件をここで入れてもOK
-    assignments.push({ title, url, category });
+    // 有効なカテゴリだけを抽出
+    if (validCategories.includes(category)) {
+      assignments.push({ title, url, category });
+    }
   });
 
   console.log("抽出された課題一覧：", assignments);
 
-  // 「課題」としてカウント
-  const count = assignments.filter(a => a.category === '課題').length;
+  // バッジに表示する課題数を送信
+  chrome.runtime.sendMessage({ count: assignments.length });
 
-  // バッジ表示のために background にメッセージ送信
-  chrome.runtime.sendMessage({ count });
+  // assignments をローカルストレージに保存（重複を防ぎたいなら工夫必要）
+  chrome.storage.local.get(['assignments'], (result) => {
+    const previous = result.assignments || [];
+    const updated = previous.concat(assignments);
+    chrome.storage.local.set({ assignments: updated });
+  });
 
-  // 任意で画面に表示（デバッグ用）
+  // デバッグ表示（任意）
   const box = document.createElement('div');
   box.style.position = 'fixed';
   box.style.top = '10px';
@@ -31,6 +40,6 @@ window.addEventListener('load', () => {
   box.style.background = '#fff';
   box.style.border = '1px solid #ccc';
   box.style.zIndex = 9999;
-  box.innerText = `課題数: ${count}`;
+  box.innerText = `課題数: ${assignments.length}`;
   document.body.appendChild(box);
 });

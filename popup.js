@@ -15,3 +15,10 @@ chrome.storage.local.get("assignments", (data) => {
     list.appendChild(li);
   });
 });
+
+// popup.js または background.js に記述
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.action.onClicked.addListener(() => {
+    chrome.tabs.create({ url: chrome.runtime.getURL('assignments.html') });
+  });
+});
